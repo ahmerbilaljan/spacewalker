@@ -52,10 +52,14 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
 {
-    if (collision.gameObject.CompareTag("Ground"))
+    if (collision.gameObject.CompareTag("Ground")) 
     {
         isGrounded = true; 
     }
+   /* else if (collision.gameObject.CompareTag("Tilemap"))
+    {
+        isGrounded = true;
+    }*/
     else if (collision.gameObject.CompareTag("Spike"))
     {
         Debug.Log("Player collided with spike!"); 
