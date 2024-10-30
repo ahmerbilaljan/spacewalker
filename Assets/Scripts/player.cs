@@ -16,6 +16,7 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         MoveRight();
         MoveLeft();
         Jump();
@@ -56,10 +57,7 @@ public class PlayerMovement : MonoBehaviour
     {
         isGrounded = true; 
     }
-   /* else if (collision.gameObject.CompareTag("Tilemap"))
-    {
-        isGrounded = true;
-    }*/
+  
     else if (collision.gameObject.CompareTag("Spike"))
     {
         Debug.Log("Player collided with spike!"); 
