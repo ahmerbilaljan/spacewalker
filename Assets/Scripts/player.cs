@@ -7,10 +7,13 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D rb;
     private bool isGrounded = true;
 
+    private Vector3 respawnPoint;
+
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        respawnPoint = transform.position;
     }
 
     // Update is called once per frame
@@ -64,4 +67,14 @@ public class PlayerMovement : MonoBehaviour
         Destroy(gameObject); 
     }
 }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        Debug.Log("Player collided with fall detector!");
+
+        if (collision.tag == "FallDetector")
+        {
+            transform.position = respawnPoint;
+        }
+    }
+    
 }
