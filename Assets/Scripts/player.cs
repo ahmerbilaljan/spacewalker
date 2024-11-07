@@ -6,16 +6,6 @@ public class PlayerMovement : MonoBehaviour
     public float jumpForce = 5f;
     private Rigidbody2D rb;
     private bool isGrounded = true;
-    private Animator animator;
-    private Vector3 originalScale; // Store the original scale for flipping
-    private Camera mainCamera;
-
-    enum PlayerState
-    {
-        Idle = 0,
-        Running = 1,
-        Jumping = 2
-    }
 
     private Vector3 respawnPoint;
 
@@ -23,73 +13,44 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        respawnPoint = transform.position;
     }
 
     // Update is called once per frame
     void Update()
     {
-        Move();
+
+        MoveRight();
+        MoveLeft();
         Jump();
-        UpdateAnimationState();
-        CheckOutOfBounds(); // Check if the player goes out of canvas
     }
 
-    void Move()
+    void MoveRight()
     {
-        float moveInput = Input.GetAxisRaw("Horizontal");
+        // Move the player to the right when the right arrow key is pressed
+        if (Input.GetKey(KeyCode.RightArrow))
+        {
+            rb.velocity = new Vector2(moveSpeed, rb.velocity.y);
+        }
+    }
 
-        // Move the player based on input
-        rb.velocity = new Vector2(moveInput * moveSpeed, rb.velocity.y);
-
-        // Flip character direction if moving left or right
-        if (moveInput > 0)
-            transform.localScale = originalScale; // Face right
-        else if (moveInput < 0)
-            transform.localScale = new Vector3(-originalScale.x, originalScale.y, originalScale.z); // Face left
+       void MoveLeft()
+    {
+        // Move the player to the right when the right arrow key is pressed
+        if (Input.GetKey(KeyCode.LeftArrow))
+        {
+            Debug.Log("left key pressed");
+            rb.velocity = new Vector2(-moveSpeed, rb.velocity.y);
+        }
     }
 
     void Jump()
     {
-        // Jump if the player presses the up arrow and is grounded
+        // Jump when the up arrow key is pressed, but only if the player is grounded
         if (Input.GetKeyDown(KeyCode.UpArrow) && isGrounded)
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
-            isGrounded = false; // Set isGrounded to false to prevent double-jumping
-        }
-    }
-
-    private void UpdateAnimationState()
-    {
-        PlayerState state;
-
-        // Determine the player's state based on movement
-        if (!isGrounded)
-        {
-            state = PlayerState.Jumping;
-        }
-        else if (Mathf.Abs(rb.velocity.x) > 0.1f)
-        {
-            state = PlayerState.Running;
-        }
-        else
-        {
-            state = PlayerState.Idle;
-        }
-
-        // Set the animator parameter to switch animations
-        animator.SetInteger("AnimationState", (int)state);
-    }
-
-    private void CheckOutOfBounds()
-    {
-        // Get the screen bounds based on the main camera
-        Vector3 screenPosition = mainCamera.WorldToViewportPoint(transform.position);
-
-        // Check if the player is outside the bounds (out of the canvas)
-        if (screenPosition.x < 0 || screenPosition.x > 1 || screenPosition.y < 0 || screenPosition.y > 1)
-        {
-            Debug.Log("Player went out of bounds!");
-            Destroy(gameObject); // Destroy the player object
+            isGrounded = false; // Prevent jumping again until the player lands
         }
     }
 
@@ -106,4 +67,14 @@ public class PlayerMovement : MonoBehaviour
         Destroy(gameObject); 
     }
 }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        Debug.Log("Player collided with fall detector!");
+
+        if (collision.tag == "FallDetector")
+        {
+            transform.position = respawnPoint;
+        }
+    }
+    
 }
