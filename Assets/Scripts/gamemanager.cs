@@ -7,6 +7,8 @@ public class GameManager : MonoBehaviour
     public Text scoreText;
     private int score = 0;
 
+    
+
     private void Awake()
     {
         // Singleton pattern to ensure there's only one GameManager instance

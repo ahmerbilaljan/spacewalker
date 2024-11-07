@@ -1,6 +1,6 @@
 // using UnityEngine;
 
-// public class VerticalMover : MonoBehaviour
+// public class HorizontalMover : MonoBehaviour
 // {
 //     public float speed = 2f;        // Speed of movement
 //     public float height = 2f;       // Height of movement
@@ -16,15 +16,15 @@
 //     void Update()
 //     {
 //         // Calculate the new Y position using PingPong to create an oscillating effect
-//         float newY = startPos.y + Mathf.PingPong(Time.time * speed, height) - height / 2;
+//         float newX = startPos.x + Mathf.PingPong(Time.time * speed, height) - height / 2;
         
 //         // Update the box's position
-//         transform.position = new Vector3(transform.position.x, newY, transform.position.z);
+//         transform.position = new Vector3(newX, transform.position.y, transform.position.z);
 //     }
 // }
 using UnityEngine;
 
-public class VerticalMover : MonoBehaviour
+public class HorizontalMover : MonoBehaviour
 {
     public float speed = 2f;    // Speed of movement
     public float distance = 2f; // Distance for back-and-forth movement
@@ -40,9 +40,9 @@ public class VerticalMover : MonoBehaviour
     void Update()
     {
         // Calculate the new X position using Sin for a smooth oscillation
-        float newY = startPos.y + Mathf.Sin(Time.time * speed) * distance / 2;
+        float newX = startPos.x + Mathf.Sin(Time.time * speed) * distance / 2;
 
         // Update the object's position
-        transform.position = new Vector3(transform.position.x, newY, transform.position.z);
+        transform.position = new Vector3(newX, transform.position.y, transform.position.z);
     }
 }
