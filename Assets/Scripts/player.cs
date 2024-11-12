@@ -127,6 +127,8 @@ public class PlayerMovement : MonoBehaviour
         if (collision.CompareTag("FallDetector"))
         {
             transform.position = respawnPoint; // Respawn the player
+            TakeDamage(10);
+
         }
     }
 
