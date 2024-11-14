@@ -37,26 +37,40 @@ public class GameManager : MonoBehaviour
     {
         // Reassign scoreText when a new scene is loaded
         scoreText = GameObject.FindWithTag("scoreText")?.GetComponent<Text>();
+        
+        // Save the current level name whenever a scene loads
+        PlayerPrefs.SetString("CurrentLevel", scene.name);
     }
 
     // Method to increment score
     public void IncrementScore()
     {
         score += 1;
-        scoreText.text = "Score: " + score.ToString();
-
+        if (scoreText != null)
+        {
+            scoreText.text = "Score: " + score.ToString();
+        }
     }
-
 
     // Method to load the next level
-    public void NextLevel()
-    {
-        SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex + 1);
-    }
+public void NextLevel()
+{
+    int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+    SceneManager.LoadSceneAsync(currentSceneIndex + 1);
 
-    // Method to load a specific scene by name
-    public void LoadScene(string sceneName)
-    {
-        SceneManager.LoadSceneAsync(sceneName);
-    }
+    // Save the new level as "LastLevel"
+    PlayerPrefs.SetString("LastLevel", SceneManager.GetSceneByBuildIndex(currentSceneIndex + 1).name);
+    PlayerPrefs.Save();
+}
+
+public void LoadScene(string sceneName)
+{
+    // Save the scene name as "LastLevel" for the Continue option
+    PlayerPrefs.SetString("LastLevel", sceneName);
+    PlayerPrefs.Save();
+
+    // Load the specified scene
+    SceneManager.LoadSceneAsync(sceneName);
+}
+
 }

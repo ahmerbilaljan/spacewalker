@@ -194,4 +194,10 @@ public class PlayerMovement : MonoBehaviour
         pauseMenu.SetActive(false);
         isPaused = false;
     }
+
+    public void ExitToStartScreen()
+    {
+        Time.timeScale = 1f; // Make sure to reset time scale
+        SceneManager.LoadScene("Start"); // Replace "StartScene" with the name of your start screen scene
+    }
 }
